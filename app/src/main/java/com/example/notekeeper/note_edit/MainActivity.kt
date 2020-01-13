@@ -1,18 +1,18 @@
-package com.example.notekeeper
+package com.example.notekeeper.note_edit
 
-import android.hardware.display.DisplayManager
 import android.os.Bundle
-import android.view.Display
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
+import com.example.notekeeper.*
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 
 class MainActivity : AppCompatActivity() {
 
-    private var notePosition = POSITION_NOT_SET
+    private val presenter = NotePresenter(this)
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,13 +29,14 @@ class MainActivity : AppCompatActivity() {
 
         spinnerCourses.adapter = adapterCourses
 
-        notePosition = intent.getIntExtra(EXTRA_NOTE_POSITION, POSITION_NOT_SET)
+        val notePosition = intent.getIntExtra(
+            EXTRA_NOTE_POSITION,
+            POSITION_NOT_SET
+        )
 
-        if(notePosition != POSITION_NOT_SET)
-            displayNote()
+        presenter.displayNote(notePosition)
 
     }
-
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
@@ -46,8 +47,7 @@ class MainActivity : AppCompatActivity() {
         return when (item.itemId) {
             R.id.action_settings -> true
             R.id.action_next -> {
-                resolveNotePosition()
-                displayNote()
+                presenter.displayNextNote()
                 true
             }
             else -> super.onOptionsItemSelected(item)
@@ -56,38 +56,25 @@ class MainActivity : AppCompatActivity() {
 
     override fun onPause() {
         super.onPause()
-        updateValues()
+        presenter.updateValues(getFieldData())
     }
 
-    private fun resolveNotePosition() {
-        if (notePosition >= DataManager.notes.lastIndex)
-            notePosition = 0
-        else
-            ++notePosition
+    private fun getFieldData(): NoteInfo {
+        return NoteInfo(
+            course = spinnerCourses.selectedItem as CourseInfo?,
+            title = textNoteTitle.text.toString(),
+            note = textNoteText.text.toString())
     }
 
-    private fun updateValues() {
-        val noteInfo = DataManager.notes[notePosition]
-
-        noteInfo.course = spinnerCourses.selectedItem as CourseInfo?
-        noteInfo.title = textNoteTitle.text.toString()
-        noteInfo.note = textNoteText.text.toString()
+    fun setNoteText(note: String?) {
+        textNoteText.setText(note)
     }
 
-    private fun displayNote() {
-        val note = setTextAndTitle()
-        setCourseInfo(note)
+    fun setNoteTitle(title: String?) {
+        textNoteTitle.setText(title)
     }
 
-    private fun setTextAndTitle(): NoteInfo {
-        val note = DataManager.notes[notePosition]
-        textNoteTitle.setText(note.title)
-        textNoteText.setText(note.note)
-        return note
-    }
-
-    private fun setCourseInfo(note: NoteInfo) {
-        val coursePosition = DataManager.courses.values.indexOf(note.course)
+    fun setCourseInfo(coursePosition: Int) {
         spinnerCourses.setSelection(coursePosition)
     }
 }
