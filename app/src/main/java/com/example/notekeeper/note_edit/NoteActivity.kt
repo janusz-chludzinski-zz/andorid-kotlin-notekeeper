@@ -19,22 +19,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
-        val adapterCourses = ArrayAdapter<CourseInfo>(
-            this,
-            android.R.layout.simple_spinner_item,
-            DataManager.courses.values.toList()
-        )
-
-        adapterCourses.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-
-        spinnerCourses.adapter = adapterCourses
-
-        val notePosition = intent.getIntExtra(
-            EXTRA_NOTE_POSITION,
-            POSITION_NOT_SET
-        )
-
-        presenter.displayNote(notePosition)
+        presenter.provideCoursesList()
+        presenter.displayNote(getNotePosition())
 
     }
 
@@ -59,11 +45,11 @@ class MainActivity : AppCompatActivity() {
         presenter.updateValues(getFieldData())
     }
 
-    private fun getFieldData(): NoteInfo {
-        return NoteInfo(
-            course = spinnerCourses.selectedItem as CourseInfo?,
-            title = textNoteTitle.text.toString(),
-            note = textNoteText.text.toString())
+    fun propagateData(courses: List<CourseInfo>) {
+        val adapterCourses = buildCoursesAdapter(courses)
+
+        adapterCourses.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        spinnerCourses.adapter = adapterCourses
     }
 
     fun setNoteText(note: String?) {
@@ -76,5 +62,24 @@ class MainActivity : AppCompatActivity() {
 
     fun setCourseInfo(coursePosition: Int) {
         spinnerCourses.setSelection(coursePosition)
+    }
+
+    private fun buildCoursesAdapter(courses: List<CourseInfo>): ArrayAdapter<CourseInfo> {
+        return ArrayAdapter<CourseInfo>(
+            this,
+            android.R.layout.simple_spinner_item,
+            courses
+        )
+    }
+
+    private fun getFieldData(): NoteInfo {
+        return NoteInfo(
+            course = spinnerCourses.selectedItem as CourseInfo?,
+            title = textNoteTitle.text.toString(),
+            note = textNoteText.text.toString())
+    }
+
+    private fun getNotePosition(): Int {
+        return intent.getIntExtra(EXTRA_NOTE_POSITION, POSITION_NOT_SET)
     }
 }
