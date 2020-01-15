@@ -10,9 +10,7 @@ object DataManager {
     const val JAVA_FUNDAMENTALS_LANGUAGE = "java_lang"
     const val JAVA_FUNDAMENTALS_CORE = "java_core"
 
-    const val NOTE_TEXT = """Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
-        |Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, 
-        |when an unknown printer took a galley of type and scrambled it to make a type specimen book."""
+    const val NOTE_TEXT = """Lorem Ipsum is simply dummy text of the printing and typesetting industry."""
 
     init {
         initializeCourses()
@@ -34,16 +32,16 @@ object DataManager {
     }
 
     private fun initializeNotes() {
-        var noteInfo = NoteInfo(courses.get(ANDROID_INTENTS), "First note", NOTE_TEXT)
+        var noteInfo = NoteInfo(courses.get(ANDROID_INTENTS), "First note", "1. " + NOTE_TEXT)
         notes.add(noteInfo)
 
-        noteInfo = NoteInfo(courses.get(ANDROID_ASYNC), "Second note", NOTE_TEXT)
+        noteInfo = NoteInfo(courses.get(ANDROID_ASYNC), "Second note", "2. " + NOTE_TEXT)
         notes.add(noteInfo)
 
-        noteInfo = NoteInfo(courses.get(JAVA_FUNDAMENTALS_LANGUAGE), "Third note", NOTE_TEXT)
+        noteInfo = NoteInfo(courses.get(JAVA_FUNDAMENTALS_LANGUAGE), "Third note", "3. " + NOTE_TEXT)
         notes.add(noteInfo)
 
-        noteInfo = NoteInfo(courses.get(JAVA_FUNDAMENTALS_CORE), "Fourth note", NOTE_TEXT)
+        noteInfo = NoteInfo(courses.get(JAVA_FUNDAMENTALS_CORE), "Fourth note", "4. " + NOTE_TEXT)
         notes.add(noteInfo)
     }
 

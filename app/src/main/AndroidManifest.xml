@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".NoteListActivity"
+            android:name=".note_list.NoteListActivity"
             android:label="@string/note_keeper_activity"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -19,7 +19,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name=".note_edit.MainActivity"
             android:label="@string/edit_note_activity"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
