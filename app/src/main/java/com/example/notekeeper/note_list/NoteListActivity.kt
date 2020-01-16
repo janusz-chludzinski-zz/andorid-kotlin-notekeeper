@@ -4,8 +4,9 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.notekeeper.*
-import com.example.notekeeper.note_edit.MainActivity
+import com.example.notekeeper.note_edit.NoteActivity
 
 import kotlinx.android.synthetic.main.activity_note_list.*
 import kotlinx.android.synthetic.main.content_note_list.*
@@ -20,37 +21,23 @@ class NoteListActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
 
         setOnClickListener()
-        setOnItemClickListener()
 
-        presenter.populateNoteList()
+        listItems.layoutManager = LinearLayoutManager(this)
+        listItems.adapter = NoteRecyclerAdapter(this, presenter.getAllNotes())
 
     }
 
     override fun onResume() {
         super.onResume()
-        presenter.populateNoteList()
+        populateNoteList()
     }
 
-    fun populateNoteList(notes: List<NoteInfo>) {
-        listNotes.adapter = ArrayAdapter<NoteInfo>(
-            this,
-            android.R.layout.simple_list_item_1,
-            notes
-        )
-    }
+    fun populateNoteList() = listItems.adapter?.notifyDataSetChanged()
 
     private fun setOnClickListener() {
         fab.setOnClickListener { view ->
-            val activityIntent = Intent(this, MainActivity::class.java)
+            val activityIntent = Intent(this, NoteActivity::class.java)
             startActivity(activityIntent)
-        }
-    }
-
-    private fun setOnItemClickListener() {
-        listNotes.setOnItemClickListener { parent, view, position, id ->
-            val intent = Intent(this, MainActivity::class.java)
-            intent.putExtra(EXTRA_NOTE_POSITION, position)
-            startActivity(intent)
         }
     }
 }
