@@ -38,6 +38,9 @@ class NotePresenter(private val activity: MainActivity) {
         return DataManager.courses.values.indexOf(note.course)
     }
 
+    fun provideCoursesList() = DataManager.notes
+
+
 
 }
 
