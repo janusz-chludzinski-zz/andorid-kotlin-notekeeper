@@ -9,7 +9,7 @@ import com.example.notekeeper.*
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 
-class MainActivity : AppCompatActivity() {
+class NoteActivity : AppCompatActivity() {
 
     private val presenter = NotePresenter(this)
 
@@ -80,6 +80,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun getNotePosition(): Int {
-        return intent.getIntExtra(EXTRA_NOTE_POSITION, POSITION_NOT_SET)
+        return intent.getIntExtra(NOTE_POSITION, POSITION_NOT_SET)
     }
 }
