@@ -3,6 +3,7 @@ package com.example.notekeeper.note_edit
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
 import com.example.notekeeper.*
@@ -18,10 +19,25 @@ class NoteActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
+        configureOnFocusElevation()
 
         presenter.provideCoursesList()
         presenter.displayNote(getNotePosition())
 
+    }
+
+    private fun configureOnFocusElevation() {
+        textNoteText.setOnFocusChangeListener { v, hasFocus ->
+            toggleElevationOnFocus(hasFocus, v)
+        }
+
+        textNoteTitle.setOnFocusChangeListener { v, hasFocus ->
+            toggleElevationOnFocus(hasFocus, v)
+        }
+    }
+
+    private fun toggleElevationOnFocus(hasFocus: Boolean, v: View) {
+        if (hasFocus) v.elevation = 16f else v.elevation = 0f
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -31,7 +47,10 @@ class NoteActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            R.id.action_settings -> true
+            R.id.action_delete -> {
+                presenter.deleteCurrentNote()
+                true
+            }
             R.id.action_next -> {
                 presenter.displayNextNote()
                 true

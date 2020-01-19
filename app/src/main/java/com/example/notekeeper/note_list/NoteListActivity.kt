@@ -3,6 +3,7 @@ package com.example.notekeeper.note_list
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -44,6 +45,7 @@ class NoteListActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         populateNoteList()
+        Toast.makeText(this, "test", Toast.LENGTH_LONG).show()
     }
 
     fun populateNoteList() = listItems.adapter?.notifyDataSetChanged()

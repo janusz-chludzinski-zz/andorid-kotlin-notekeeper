@@ -4,4 +4,6 @@
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
     <color name="custom_orange">#F05A28</color>
+
+    <color name="activity_background">#FAFAFA</color>
 </resources>
