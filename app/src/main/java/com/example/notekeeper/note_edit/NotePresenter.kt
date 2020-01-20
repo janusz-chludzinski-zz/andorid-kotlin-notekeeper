@@ -17,14 +17,9 @@ class NotePresenter(private val activity: NoteActivity) {
                 DataManager.notes[notePosition] = newNoteInfo
     }
 
-    private fun createNewNote(newNoteInfo: NoteInfo) {
-        DataManager.notes.add(newNoteInfo)
-    }
-
     fun displayNote(notePosition: Int) {
         if (notePosition != POSITION_NOT_SET) {
             val note = DataManager.notes[notePosition]
-
             setActivityData(note)
 
             this.notePosition = notePosition
@@ -32,7 +27,18 @@ class NotePresenter(private val activity: NoteActivity) {
     }
 
     fun displayNextNote() {
-        resolveNotePosition()
+        resolveNextNotePosition()
+        setupNotePager()
+        displayNote(notePosition)
+    }
+
+    fun setupNotePager() {
+        activity.setupNotePager("${notePosition + 1} / ${DataManager.notes.size}")
+    }
+
+    fun displayPreviousNote() {
+        resolvePreviousNotePosition()
+        setupNotePager()
         displayNote(notePosition)
     }
 
@@ -47,11 +53,22 @@ class NotePresenter(private val activity: NoteActivity) {
         activity.finish()
     }
 
-    private fun resolveNotePosition() {
+    private fun createNewNote(newNoteInfo: NoteInfo) {
+        DataManager.notes.add(newNoteInfo)
+    }
+
+    private fun resolveNextNotePosition() {
         if (notePosition >= DataManager.notes.lastIndex)
             notePosition = 0
         else
             ++notePosition
+    }
+
+    private fun resolvePreviousNotePosition() {
+        if (notePosition <= 0)
+            notePosition = DataManager.notes.lastIndex
+        else
+            --notePosition
     }
 
     private fun resolveCoursePosition(note: NoteInfo): Int {

@@ -14,30 +14,21 @@ class NoteActivity : AppCompatActivity() {
 
     private val presenter = NotePresenter(this)
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
         configureOnFocusElevation()
+        setupBetweenNoteNavigation()
 
         presenter.provideCoursesList()
         presenter.displayNote(getNotePosition())
-
+        presenter.setupNotePager()
     }
 
-    private fun configureOnFocusElevation() {
-        textNoteText.setOnFocusChangeListener { v, hasFocus ->
-            toggleElevationOnFocus(hasFocus, v)
-        }
-
-        textNoteTitle.setOnFocusChangeListener { v, hasFocus ->
-            toggleElevationOnFocus(hasFocus, v)
-        }
-    }
-
-    private fun toggleElevationOnFocus(hasFocus: Boolean, v: View) {
-        if (hasFocus) v.elevation = 16f else v.elevation = 0f
+    override fun onPause() {
+        super.onPause()
+        presenter.updateValues(getFieldData())
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -59,11 +50,6 @@ class NoteActivity : AppCompatActivity() {
         }
     }
 
-    override fun onPause() {
-        super.onPause()
-        presenter.updateValues(getFieldData())
-    }
-
     fun propagateData(courses: List<CourseInfo>) {
         val adapterCourses = buildCoursesAdapter(courses)
 
@@ -81,6 +67,29 @@ class NoteActivity : AppCompatActivity() {
 
     fun setCourseInfo(coursePosition: Int) {
         spinnerCourses.setSelection(coursePosition)
+    }
+
+    fun setupNotePager(value: String) {
+        notePager.text = value
+    }
+
+    private fun setupBetweenNoteNavigation() {
+        actionNextBtn.setOnClickListener{_ ->  presenter.displayNextNote()}
+        actionPrevBtn.setOnClickListener{_ -> presenter.displayPreviousNote()}
+    }
+
+    private fun configureOnFocusElevation() {
+        textNoteText.setOnFocusChangeListener { v, hasFocus ->
+            toggleElevationOnFocus(hasFocus, v)
+        }
+
+        textNoteTitle.setOnFocusChangeListener { v, hasFocus ->
+            toggleElevationOnFocus(hasFocus, v)
+        }
+    }
+
+    private fun toggleElevationOnFocus(hasFocus: Boolean, v: View) {
+        if (hasFocus) v.elevation = 16f else v.elevation = 0f
     }
 
     private fun buildCoursesAdapter(courses: List<CourseInfo>): ArrayAdapter<CourseInfo> {

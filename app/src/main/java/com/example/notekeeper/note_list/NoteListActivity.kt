@@ -45,7 +45,6 @@ class NoteListActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         populateNoteList()
-//        listItems.adapter?.notifyItemRemoved()
         Toast.makeText(this, "test", Toast.LENGTH_LONG).show()
     }
 
