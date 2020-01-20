@@ -42,10 +42,6 @@ class NoteActivity : AppCompatActivity() {
                 presenter.deleteCurrentNote()
                 true
             }
-            R.id.action_next -> {
-                presenter.displayNextNote()
-                true
-            }
             else -> super.onOptionsItemSelected(item)
         }
     }
