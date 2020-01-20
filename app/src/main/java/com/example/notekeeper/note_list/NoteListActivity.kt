@@ -29,7 +29,7 @@ class NoteListActivity : AppCompatActivity() {
         drawer.addDrawerListener(toggle)
 
         listItems.layoutManager = LinearLayoutManager(this)
-        listItems.adapter = NoteRecyclerAdapter(this, presenter.getAllNotes())
+        listItems.adapter = NoteRecyclerAdapter(this)
 
         toggle.syncState()
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -45,6 +45,7 @@ class NoteListActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         populateNoteList()
+//        listItems.adapter?.notifyItemRemoved()
         Toast.makeText(this, "test", Toast.LENGTH_LONG).show()
     }
 

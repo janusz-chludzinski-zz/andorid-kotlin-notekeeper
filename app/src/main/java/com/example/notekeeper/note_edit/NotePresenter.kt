@@ -1,22 +1,20 @@
 package com.example.notekeeper.note_edit
 
-import android.app.Activity
-import android.content.Intent
 import com.example.notekeeper.DataManager
-import com.example.notekeeper.NOTE_POSITION
 import com.example.notekeeper.NoteInfo
 import com.example.notekeeper.POSITION_NOT_SET
-import com.example.notekeeper.note_list.NoteListActivity
 
 class NotePresenter(private val activity: NoteActivity) {
 
     private var notePosition = POSITION_NOT_SET
+    private var isDeleteMode: Boolean = false
 
     fun updateValues(newNoteInfo: NoteInfo) {
-        if (notePosition == POSITION_NOT_SET)
-            createNewNote(newNoteInfo)
-        else
-            DataManager.notes[notePosition] = newNoteInfo
+        if (!isDeleteMode)
+            if (notePosition == POSITION_NOT_SET)
+                createNewNote(newNoteInfo)
+            else
+                DataManager.notes[notePosition] = newNoteInfo
     }
 
     private fun createNewNote(newNoteInfo: NoteInfo) {
@@ -43,6 +41,12 @@ class NotePresenter(private val activity: NoteActivity) {
         activity.propagateData(courses)
     }
 
+    fun deleteCurrentNote() {
+        isDeleteMode = true
+        DataManager.notes.removeAt(notePosition)
+        activity.finish()
+    }
+
     private fun resolveNotePosition() {
         if (notePosition >= DataManager.notes.lastIndex)
             notePosition = 0
@@ -58,12 +62,6 @@ class NotePresenter(private val activity: NoteActivity) {
         activity.setCourseInfo(resolveCoursePosition(note))
         activity.setNoteTitle(note.title)
         activity.setNoteText(note.note)
-    }
-
-    fun deleteCurrentNote() {
-        DataManager.notes.removeAt(notePosition)
-        val intent = Intent(activity, NoteListActivity::class.java)
-        activity.startActivity(intent)
     }
 }
 
