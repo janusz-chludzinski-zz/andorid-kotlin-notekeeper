@@ -45,10 +45,17 @@ class NoteListActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         populateNoteList()
-        Toast.makeText(this, "test", Toast.LENGTH_LONG).show()
+        manageToast()
     }
 
-    fun populateNoteList() = listItems.adapter?.notifyDataSetChanged()
+    private fun manageToast() {
+        val stringExtra = intent.getStringExtra("toastInfo")
+        if (stringExtra != null) {
+            Toast.makeText(this, "Note $stringExtra deleted!", Toast.LENGTH_LONG).show()
+        }
+    }
+
+    private fun populateNoteList() = listItems.adapter?.notifyDataSetChanged()
 
     private fun setOnClickListener() {
         fab.setOnClickListener { view ->

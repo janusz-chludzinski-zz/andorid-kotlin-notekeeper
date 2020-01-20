@@ -1,5 +1,6 @@
 package com.example.notekeeper.note_edit
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -7,6 +8,7 @@ import android.view.View
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
 import com.example.notekeeper.*
+import com.example.notekeeper.note_list.NoteListActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 
@@ -67,6 +69,13 @@ class NoteActivity : AppCompatActivity() {
 
     fun setupNotePager(value: String) {
         notePager.text = value
+    }
+
+    fun goToNotesListView(text: String) {
+        val intent = Intent(this, NoteListActivity::class.java)
+        intent.putExtra("toastInfo", text)
+        startActivity(intent)
+
     }
 
     private fun setupBetweenNoteNavigation() {

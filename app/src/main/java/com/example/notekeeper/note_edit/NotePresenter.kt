@@ -1,5 +1,6 @@
 package com.example.notekeeper.note_edit
 
+import android.content.Intent
 import com.example.notekeeper.DataManager
 import com.example.notekeeper.NoteInfo
 import com.example.notekeeper.POSITION_NOT_SET
@@ -49,8 +50,13 @@ class NotePresenter(private val activity: NoteActivity) {
 
     fun deleteCurrentNote() {
         isDeleteMode = true
-        DataManager.notes.removeAt(notePosition)
-        activity.finish()
+        val note = DataManager.notes.get(notePosition)
+        DataManager.notes.remove(note)
+        callListView(note.title.toString())
+    }
+
+    private fun callListView(text: String) {
+        activity.goToNotesListView(text)
     }
 
     private fun createNewNote(newNoteInfo: NoteInfo) {
