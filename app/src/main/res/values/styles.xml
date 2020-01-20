@@ -23,4 +23,9 @@
         <item name="android:textStyle">bold</item>
     </style>
 
+    <style name="TextViewDefault">
+        <item name="android:background">@android:color/white</item>
+        <item name="android:backgroundTint">@android:color/white</item>
+        <item name="android:fontFamily">@font/roboto_light</item>
+    </style>
 </resources>

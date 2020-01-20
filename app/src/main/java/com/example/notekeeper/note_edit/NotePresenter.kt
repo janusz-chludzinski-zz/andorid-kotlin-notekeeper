@@ -1,5 +1,6 @@
 package com.example.notekeeper.note_edit
 
+import android.content.Intent
 import com.example.notekeeper.DataManager
 import com.example.notekeeper.NoteInfo
 import com.example.notekeeper.POSITION_NOT_SET
@@ -7,22 +8,19 @@ import com.example.notekeeper.POSITION_NOT_SET
 class NotePresenter(private val activity: NoteActivity) {
 
     private var notePosition = POSITION_NOT_SET
+    private var isDeleteMode: Boolean = false
 
     fun updateValues(newNoteInfo: NoteInfo) {
-        if (notePosition == POSITION_NOT_SET)
-            createNewNote(newNoteInfo)
-        else
-            DataManager.notes[notePosition] = newNoteInfo
-    }
-
-    private fun createNewNote(newNoteInfo: NoteInfo) {
-        DataManager.notes.add(newNoteInfo)
+        if (!isDeleteMode)
+            if (notePosition == POSITION_NOT_SET)
+                createNewNote(newNoteInfo)
+            else
+                DataManager.notes[notePosition] = newNoteInfo
     }
 
     fun displayNote(notePosition: Int) {
         if (notePosition != POSITION_NOT_SET) {
             val note = DataManager.notes[notePosition]
-
             setActivityData(note)
 
             this.notePosition = notePosition
@@ -30,7 +28,18 @@ class NotePresenter(private val activity: NoteActivity) {
     }
 
     fun displayNextNote() {
-        resolveNotePosition()
+        resolveNextNotePosition()
+        setupNotePager()
+        displayNote(notePosition)
+    }
+
+    fun setupNotePager() {
+        activity.setupNotePager("${notePosition + 1} / ${DataManager.notes.size}")
+    }
+
+    fun displayPreviousNote() {
+        resolvePreviousNotePosition()
+        setupNotePager()
         displayNote(notePosition)
     }
 
@@ -39,11 +48,33 @@ class NotePresenter(private val activity: NoteActivity) {
         activity.propagateData(courses)
     }
 
-    private fun resolveNotePosition() {
+    fun deleteCurrentNote() {
+        isDeleteMode = true
+        val note = DataManager.notes.get(notePosition)
+        DataManager.notes.remove(note)
+        callListView(note.title.toString())
+    }
+
+    private fun callListView(text: String) {
+        activity.goToNotesListView(text)
+    }
+
+    private fun createNewNote(newNoteInfo: NoteInfo) {
+        DataManager.notes.add(newNoteInfo)
+    }
+
+    private fun resolveNextNotePosition() {
         if (notePosition >= DataManager.notes.lastIndex)
             notePosition = 0
         else
             ++notePosition
+    }
+
+    private fun resolvePreviousNotePosition() {
+        if (notePosition <= 0)
+            notePosition = DataManager.notes.lastIndex
+        else
+            --notePosition
     }
 
     private fun resolveCoursePosition(note: NoteInfo): Int {

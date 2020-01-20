@@ -7,12 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.notekeeper.DataManager
 import com.example.notekeeper.NOTE_POSITION
-import com.example.notekeeper.NoteInfo
 import com.example.notekeeper.R
 import com.example.notekeeper.note_edit.NoteActivity
 
-class NoteRecyclerAdapter(private val context: Context, private val notes: List<NoteInfo>) :
+class NoteRecyclerAdapter(private val context: Context) :
     RecyclerView.Adapter<NoteRecyclerAdapter.ViewHolder>() {
 
     private val layoutInflater = LayoutInflater.from(context)
@@ -22,28 +22,24 @@ class NoteRecyclerAdapter(private val context: Context, private val notes: List<
         return ViewHolder(itemView)
     }
 
-    override fun getItemCount() = notes.size
+    override fun getItemCount() = DataManager.notes.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val note = notes[position]
+        val note = DataManager.notes[position]
 
         holder.textCourse.text = note.course?.title
         holder.textTitle.text = note.title
 
-        holder.notePosition = position
+        holder.itemView.setOnClickListener {
+            val intent = Intent(context, NoteActivity::class.java)
+            intent.putExtra(NOTE_POSITION, position)
+            context.startActivity(intent)
+        }
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val textCourse = itemView.findViewById<TextView>(R.id.textCourse)
         val textTitle = itemView.findViewById<TextView>(R.id.textTitle)
-
-        var notePosition = 0
-        init {
-            itemView.setOnClickListener {
-                val intent = Intent(context, NoteActivity::class.java)
-                intent.putExtra(NOTE_POSITION, notePosition)
-                context.startActivity(intent)
-            }
-        }
     }
+
 }

@@ -27,6 +27,10 @@
             android:name=".note_edit.NoteActivity"
             android:label="@string/edit_note_activity"
             android:theme="@style/AppTheme.NoActionBar"></activity>
+
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
     </application>
 
 </manifest>

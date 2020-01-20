@@ -1,11 +1,14 @@
 package com.example.notekeeper.note_edit
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
 import com.example.notekeeper.*
+import com.example.notekeeper.note_list.NoteListActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 
@@ -13,15 +16,21 @@ class NoteActivity : AppCompatActivity() {
 
     private val presenter = NotePresenter(this)
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
+        configureOnFocusElevation()
+        setupBetweenNoteNavigation()
 
         presenter.provideCoursesList()
         presenter.displayNote(getNotePosition())
+        presenter.setupNotePager()
+    }
 
+    override fun onPause() {
+        super.onPause()
+        presenter.updateValues(getFieldData())
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -31,18 +40,12 @@ class NoteActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            R.id.action_settings -> true
-            R.id.action_next -> {
-                presenter.displayNextNote()
+            R.id.action_delete -> {
+                presenter.deleteCurrentNote()
                 true
             }
             else -> super.onOptionsItemSelected(item)
         }
-    }
-
-    override fun onPause() {
-        super.onPause()
-        presenter.updateValues(getFieldData())
     }
 
     fun propagateData(courses: List<CourseInfo>) {
@@ -62,6 +65,36 @@ class NoteActivity : AppCompatActivity() {
 
     fun setCourseInfo(coursePosition: Int) {
         spinnerCourses.setSelection(coursePosition)
+    }
+
+    fun setupNotePager(value: String) {
+        notePager.text = value
+    }
+
+    fun goToNotesListView(text: String) {
+        val intent = Intent(this, NoteListActivity::class.java)
+        intent.putExtra("toastInfo", text)
+        startActivity(intent)
+
+    }
+
+    private fun setupBetweenNoteNavigation() {
+        actionNextBtn.setOnClickListener{_ ->  presenter.displayNextNote()}
+        actionPrevBtn.setOnClickListener{_ -> presenter.displayPreviousNote()}
+    }
+
+    private fun configureOnFocusElevation() {
+        textNoteText.setOnFocusChangeListener { v, hasFocus ->
+            toggleElevationOnFocus(hasFocus, v)
+        }
+
+        textNoteTitle.setOnFocusChangeListener { v, hasFocus ->
+            toggleElevationOnFocus(hasFocus, v)
+        }
+    }
+
+    private fun toggleElevationOnFocus(hasFocus: Boolean, v: View) {
+        if (hasFocus) v.elevation = 16f else v.elevation = 0f
     }
 
     private fun buildCoursesAdapter(courses: List<CourseInfo>): ArrayAdapter<CourseInfo> {

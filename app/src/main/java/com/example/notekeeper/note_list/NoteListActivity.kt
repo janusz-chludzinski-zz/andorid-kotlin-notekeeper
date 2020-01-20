@@ -3,6 +3,7 @@ package com.example.notekeeper.note_list
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -28,7 +29,7 @@ class NoteListActivity : AppCompatActivity() {
         drawer.addDrawerListener(toggle)
 
         listItems.layoutManager = LinearLayoutManager(this)
-        listItems.adapter = NoteRecyclerAdapter(this, presenter.getAllNotes())
+        listItems.adapter = NoteRecyclerAdapter(this)
 
         toggle.syncState()
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -44,9 +45,17 @@ class NoteListActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         populateNoteList()
+        manageToast()
     }
 
-    fun populateNoteList() = listItems.adapter?.notifyDataSetChanged()
+    private fun manageToast() {
+        val stringExtra = intent.getStringExtra("toastInfo")
+        if (stringExtra != null) {
+            Toast.makeText(this, "Note $stringExtra deleted!", Toast.LENGTH_LONG).show()
+        }
+    }
+
+    private fun populateNoteList() = listItems.adapter?.notifyDataSetChanged()
 
     private fun setOnClickListener() {
         fab.setOnClickListener { view ->
