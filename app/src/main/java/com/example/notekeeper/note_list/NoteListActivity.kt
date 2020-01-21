@@ -23,29 +23,23 @@ import kotlinx.android.synthetic.main.drawer_header.view.*
 class NoteListActivity : AppCompatActivity() {
 
     private val presenter = NoteListPresenter(this)
-    lateinit var toggle: ActionBarDrawerToggle
-    lateinit var animationDrawable: AnimationDrawable
+    private lateinit var toggle: ActionBarDrawerToggle
+    private lateinit var animationDrawable: AnimationDrawable
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_note_list)
         setSupportActionBar(toolbar)
-
+        setupNavigationDrawer()
         setOnClickListener()
-        toggle = ActionBarDrawerToggle(this, drawer, drawer_open, drawer_close)
-        drawer.addDrawerListener(toggle)
+        setupLayoutManagerAndAdapter()
 
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+    }
+
+    private fun setupLayoutManagerAndAdapter() {
         listItems.layoutManager = LinearLayoutManager(this)
         listItems.adapter = NoteRecyclerAdapter(this)
-
-        val view = layoutInflater.inflate(R.layout.drawer_header, navigationDrawer, true)
-        animationDrawable = view.menu_header.background as AnimationDrawable
-        animationDrawable.setEnterFadeDuration(2000)
-        animationDrawable.setExitFadeDuration(4000)
-        animationDrawable.start()
-
-        toggle.syncState()
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -59,7 +53,25 @@ class NoteListActivity : AppCompatActivity() {
         super.onResume()
         populateNoteList()
         manageToast()
+    }
 
+    private fun setupNavigationDrawer() {
+        setupNavigationDrawerAnimation()
+        setupNavigationDrawerToggle()
+    }
+
+    private fun setupNavigationDrawerToggle() {
+        toggle = ActionBarDrawerToggle(this, drawer, drawer_open, drawer_close)
+        drawer.addDrawerListener(toggle)
+        toggle.syncState()
+    }
+
+    private fun setupNavigationDrawerAnimation() {
+        layoutInflater.inflate(R.layout.drawer_header, navigationDrawer, true)
+        animationDrawable = menu_header.background as AnimationDrawable
+        animationDrawable.setEnterFadeDuration(2000)
+        animationDrawable.setExitFadeDuration(4000)
+        animationDrawable.start()
     }
 
     private fun manageToast() {
