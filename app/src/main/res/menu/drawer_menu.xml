@@ -1,5 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:title="First item" />
-    <item android:title="SecondItem" />
+    <item
+        android:icon="@drawable/ic_note_black_24dp"
+        android:title="@string/notes" />
+    <item
+        android:icon="@drawable/ic_video_library_black_24dp"
+        android:title="@string/courses" />
+    <item android:title="Communicate">
+        <menu>
+            <item
+                android:icon="@drawable/ic_share_black_24dp"
+                android:title="@string/menu_share" />
+            <item
+                android:icon="@drawable/ic_send_black_24dp"
+                android:title="@string/menu_send" />
+        </menu>
+    </item>
 </menu>
