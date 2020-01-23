@@ -1,6 +1,5 @@
 package com.example.notekeeper.note_edit
 
-import android.content.Intent
 import com.example.notekeeper.DataManager
 import com.example.notekeeper.NoteInfo
 import com.example.notekeeper.POSITION_NOT_SET

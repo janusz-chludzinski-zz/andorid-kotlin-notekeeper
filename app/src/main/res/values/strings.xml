@@ -20,4 +20,8 @@
 
     <string name="drawer_open">Open</string>
     <string name="drawer_close">Close</string>
+    <string name="app_user">Janusz Chludziński</string>
+    <string name="app_user_email">chludzinski.janusz@gmail.com</string>
+    <string name="notes">Notes</string>
+    <string name="courses">Courses</string>
 </resources>

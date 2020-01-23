@@ -1,5 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:title="First item" />
-    <item android:title="SecondItem" />
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/drawer_notes"
+            android:icon="@drawable/ic_note_black_24dp"
+            android:title="@string/notes" />
+        <item
+            android:id="@+id/drawer_courses"
+            android:icon="@drawable/ic_video_library_black_24dp"
+            android:title="@string/courses" />
+    </group>
+    <item android:title="Communicate">
+        <menu>
+            <item
+                android:id="@+id/drawer_share"
+                android:icon="@drawable/ic_share_black_24dp"
+                android:title="@string/menu_share" />
+            <item
+                android:id="@+id/drawer_send"
+                android:icon="@drawable/ic_send_black_24dp"
+                android:title="@string/menu_send" />
+        </menu>
+    </item>
 </menu>
