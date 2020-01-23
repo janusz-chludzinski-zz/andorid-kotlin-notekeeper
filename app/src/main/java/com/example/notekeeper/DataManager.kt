@@ -19,16 +19,16 @@ object DataManager {
 
     private fun initializeCourses() {
         var course = CourseInfo(ANDROID_INTENTS, "Android Programming with Intents")
-        courses.set(course.courseId, course)
+        courses[course.courseId] = course
 
         course = CourseInfo(ANDROID_ASYNC, "Android Async Programming and Services")
-        courses.set(course.courseId, course)
+        courses[course.courseId] = course
 
         course = CourseInfo(JAVA_FUNDAMENTALS_LANGUAGE, "Java Fundamentals: The Java Language")
-        courses.set(course.courseId, course)
+        courses[course.courseId] = course
 
         course = CourseInfo(JAVA_FUNDAMENTALS_CORE, "Java Fundamentals - The Core Platform")
-        courses.set(course.courseId, course)
+        courses[course.courseId] = course
     }
 
     private fun initializeNotes() {
